@@ -4,10 +4,10 @@ namespace App\Controllers;
 
 use App\DAO\TokensDAO;
 use App\DAO\UsuariosDAO;
-use App\Models\TokensModel;
 use Firebase\JWT\JWT;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use function src\generateToken;
 
 final class AuthController{
 
@@ -26,43 +26,57 @@ final class AuthController{
         if(!password_verify($senha, $usuario->getSenha()))
             return $response->withStatus(401);
 
-        $expiredAt = (new \DateTime('now', new \DateTimeZone('America/Sao_Paulo')))->modify('+2 days')->format('Y-m-d H:i:s');
-
-        $tokenPayLoad = [
-            'sub' => $usuario->getId(),
-            'name' => $usuario->getNome(),
-            'email' => $usuario->getEmail(),
-            'expired_at' => $expiredAt
+        $usuarioArray = [
+            "id" => $usuario->getId(),
+            "nome" => $usuario->getNome(),
+            "email" => $usuario->getEmail(),
         ];
 
-        $token = JWT::encode($tokenPayLoad, getenv('JWT_SECRET_KEY'), 'HS256');
-        $refreshTokenPayLoad = [
-            'email' => $usuario->getEmail()
-        ];
-        $refreshToken = JWT::encode($refreshTokenPayLoad, getenv('JWT_SECRET_KEY'), 'HS256');
-
-        $tokenModel = new TokensModel();
-        $tokenModel->setExpired_at($expiredAt);        
-        $tokenModel->setRefresh_token($refreshToken);        
-        $tokenModel->setToken($token);        
-        $tokenModel->setUsuarios_id($usuario->getId());        
-        
-        $tokensDAO = new TokensDAO();
-        $tokensDAO->createToken($tokenModel);
+        $token = generateToken($usuarioArray);
 
         $response = $response->withJson([
-            "token" => $token,
-            "refresh_token" => $refreshToken,
+            "token" => $token['token'],
+            "refresh_token" => $token['refresh_token']
         ]);
 
         return $response;
+        
     }
     
-    public function logoff(Request $request, Response $response, array $args): Response{
+    public function refreshToken(Request $request, Response $response, array $args): Response{
 
+        $data = $request->getParsedBody();
+        $refreshToken = $data['refresh_token'];
+
+        $refreshTokenDecoded = JWT::decode(
+            $refreshToken,
+            getenv('JWT_SECRET_KEY'),
+            ['HS256']
+        );
+        
+        $TokensDAO = new TokensDAO();
+        $refreshTokenExists = $TokensDAO->verifyRefreshToken($refreshToken); 
+        
+        if(!$refreshTokenExists)
+            return $response->withStatus(401);
+
+        $usuariosDAO = new UsuariosDAO();
+        $usuario = $usuariosDAO->getUserByEmail($refreshTokenDecoded->email);
+
+        if(is_null($usuario))
+            return $response->withStatus(401);
+
+        $usuarioArray = [
+            "id" => $usuario->getId(),
+            "nome" => $usuario->getNome(),
+            "email" => $usuario->getEmail(),
+        ];
+
+        $token = generateToken($usuarioArray);
 
         $response = $response->withJson([
-            'message' => 'cliente inserido com sucesso!'
+            "token" => $token['token'],
+            "refresh_token" => $token['refresh_token']
         ]);
 
         return $response;
