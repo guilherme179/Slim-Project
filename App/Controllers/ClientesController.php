@@ -18,8 +18,33 @@ final class ClientesController{
 
         return $response;
     }
+
+    public function getClienteById(Request $request, Response $response, array $args): Response{
+        
+        $data = $request->getParsedBody();
+
+        $clientesDAO = new ClientesDAO();
+        $cliente = new ClientesModel();
+
+        if(empty($data['id'])){
+            
+            $response = $response->withJson([
+                'message' => 'necessario preencher o campo id!'
+            ]);
+            return $response;
+            
+        } else {
+
+            $cliente->setId($data['id']);
+        }
+
+        $clientes = $clientesDAO->getCliente($cliente);
+        $response = $response->withJson($clientes);
+
+        return $response;
+    }
     
-    public function insertCliente(Request $request, Response $response, array $args): Response{
+    public function insertCliente(Request $request, Response $response, array $args){
         
         $data = $request->getParsedBody();
 

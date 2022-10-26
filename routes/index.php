@@ -16,6 +16,7 @@ $app->get('/clientes', ClientesController::class . ':getClientes');
 $app->post('/clientes', ClientesController::class . ':insertCliente');
 $app->put('/clientes', ClientesController::class . ':updateCliente');
 $app->delete('/clientes', ClientesController::class . ':deleteCliente');
+$app->post('/clientes/id', ClientesController::class . ':getClienteById');
 
 
 $app->run();

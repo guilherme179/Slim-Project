@@ -17,6 +17,17 @@ class ClientesDAO extends Conexao {
         return $clientes;
     }
 
+    public function getCliente(ClientesModel $cliente): array{
+        $statement = $this->pdo
+        ->prepare('SELECT * FROM clientes WHERE id = :id;');
+        $statement->execute([
+            'id' => $cliente->getId()
+        ]);
+        $clienteId = $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $clienteId;
+    }
+
     public function insertCliente(ClientesModel $cliente): void {
         $statement = $this->pdo
             ->prepare('INSERT INTO clientes VALUES(
