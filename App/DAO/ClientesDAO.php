@@ -2,30 +2,31 @@
 
 namespace App\DAO;
 use App\Models\ClientesModel;
+use App\DAO\IndexDAO;
 
 class ClientesDAO extends Conexao {
-
+    
     public function __construct(){
         parent::__construct();
     }
-
+    
     public function getAllClientes(): array{
-        $clientes = $this->pdo
-        ->query('SELECT * FROM clientes')
-        ->fetchAll(\PDO::FETCH_ASSOC);
+        $tabela = 'clientes';
+        $index = new IndexDAO();
 
+        $clientes = $index->getAllDados($tabela);
         return $clientes;
     }
 
     public function getCliente(ClientesModel $cliente): array{
-        $statement = $this->pdo
-        ->prepare('SELECT * FROM clientes WHERE id = :id;');
-        $statement->execute([
+        $tabela = array( 
+            'tabela' => 'clientes',
             'id' => $cliente->getId()
-        ]);
-        $clienteId = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        );
+        $index = new IndexDAO();
 
-        return $clienteId;
+        $cliente = $index->getDado($tabela);
+        return $cliente;
     }
 
     public function insertCliente(ClientesModel $cliente): void {
@@ -33,11 +34,29 @@ class ClientesDAO extends Conexao {
             ->prepare('INSERT INTO clientes VALUES(
                 null,
                 :nome,
-                :email,
-                :telefone
+                :telefone,
+                :preco,
+                :precoVisual,
+                :cep,
+                :rua,
+                :numeroIMO,
+                :bairro,
+                :cidade,
+                :uf,                
+                :cnpj,
+                :email
             );');
         $statement->execute([
             'nome' => $cliente->getNome(),
+            'preco' => $cliente->getPreco(),
+            'precoVisual' => $cliente->getPrecoVisual(),
+            'cep' => $cliente->getCep(),
+            'rua' => $cliente->getRua(),
+            'numeroIMO' => $cliente->getNumeroIMO(),
+            'bairro' => $cliente->getBairro(),
+            'cidade' => $cliente->getCidade(),
+            'uf' => $cliente->getUf(),
+            'cnpj' => $cliente->getCnpj(),
             'email' => $cliente->getEmail(),
             'telefone' => $cliente->getTelefone(),
         ]);
@@ -59,11 +78,11 @@ class ClientesDAO extends Conexao {
     }
     
     public function deleteCliente(ClientesModel $cliente): void {
-        $statement = $this->pdo
-            ->prepare('DELETE FROM clientes 
-                where id = :id');
-        $statement->execute([
+        $tabela = array( 
+            'tabela' => 'clientes',
             'id' => $cliente->getId()
-        ]);
+        );
+        $index = new IndexDAO();
+        $index->deleteDado($tabela);
     }
 }

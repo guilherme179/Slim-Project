@@ -17,6 +17,51 @@ final class ClientesModel {
     /** 
     * @var string
     */
+    private $preco;
+    
+    /** 
+    * @var string
+    */
+    private $precoVisual;
+    
+    /** 
+    * @var string
+    */
+    private $cep;
+    
+    /** 
+    * @var string
+    */
+    private $rua;
+    
+    /** 
+    * @var string
+    */
+    private $numeroIMO;
+    
+    /** 
+    * @var string
+    */
+    private $bairro;
+    
+    /** 
+    * @var string
+    */
+    private $cidade;
+    
+    /** 
+    * @var string
+    */
+    private $uf;
+    
+    /** 
+    * @var string
+    */
+    private $cnpj;
+    
+    /** 
+    * @var string
+    */
     private $email;
     
     /** 
@@ -29,6 +74,69 @@ final class ClientesModel {
     */
     public function getId(): int{
         return $this->id;
+    }
+
+    /** 
+    * @return string
+    */
+    public function getPreco(): string{
+        return $this->preco;
+    }
+
+    /** 
+    * @return string
+    */
+    public function getPrecoVisual(): string{
+        return $this->precoVisual;
+    }
+
+    /** 
+    * @return string
+    */
+    public function getCep(): string{
+        return $this->cep;
+    }
+
+    /** 
+    * @return string
+    */
+    public function getRua(): string{
+        return $this->rua;
+    }
+
+    /** 
+    * @return string
+    */
+    public function getNumeroIMO(): string{
+        return $this->numeroIMO;
+    }
+
+    /** 
+    * @return string
+    */
+    public function getBairro(): string{
+        return $this->bairro;
+    }
+
+    /** 
+    * @return string
+    */
+    public function getCidade(): string{
+        return $this->cidade;
+    }
+
+    /** 
+    * @return string
+    */
+    public function getUf(): string{
+        return $this->uf;
+    }
+
+    /** 
+    * @return string
+    */
+    public function getCnpj(): string{
+        return $this->cnpj;
     }
 
     /** 
@@ -67,6 +175,87 @@ final class ClientesModel {
     */
     public function setNome(string $nome): ClientesModel{
        $this->nome = $nome;
+       return $this;
+    }
+
+    /** 
+    * @param string $preco
+    * @return string
+    */
+    public function setPreco(string $preco): ClientesModel{
+       $this->preco = $preco;
+       return $this;
+    }
+
+    /** 
+    * @param string $preco
+    * @return string
+    */
+    public function setPrecoVisual(string $precoVisual): ClientesModel{
+       $this->precoVisual = $precoVisual;
+       return $this;
+    }
+
+    /** 
+    * @param string $cep
+    * @return string
+    */
+    public function setCep(string $cep): ClientesModel{
+       $this->cep = $cep;
+       return $this;
+    }
+
+    /** 
+    * @param string $rua
+    * @return string
+    */
+    public function setRua(string $rua): ClientesModel{
+       $this->rua = $rua;
+       return $this;
+    }
+
+    /** 
+    * @param string $numeroIMO
+    * @return string
+    */
+    public function setNumeroIMO(string $numeroIMO): ClientesModel{
+       $this->numeroIMO = $numeroIMO;
+       return $this;
+    }
+
+    /** 
+    * @param string $bairro
+    * @return string
+    */
+    public function setBairro(string $bairro): ClientesModel{
+       $this->bairro = $bairro;
+       return $this;
+    }
+
+    /** 
+    * @param string $cidade
+    * @return string
+    */
+    public function setCidade(string $cidade): ClientesModel{
+       $this->cidade = $cidade;
+       return $this;
+    }
+
+    /** 
+    * @param string $uf
+    * @return string
+    */
+    public function setUf(string $uf): ClientesModel{
+       $this->uf = $uf;
+       return $this;
+    }
+
+    /** 
+    * @param string $cnpj
+    * @return string
+    */
+    public function setCnpj(string $cnpj): ClientesModel{
+       $this->cnpj = $cnpj;
        return $this;
     }
 

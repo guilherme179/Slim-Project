@@ -51,7 +51,7 @@ final class ClientesController{
         $clientesDAO = new ClientesDAO();
         $cliente = new ClientesModel();
 
-        if(empty($data['nome']) || empty($data['email']) || empty($data['telefone'])){
+        if(empty($data['nome']) || empty($data['preco']) || empty($data['cep']) || empty($data['numeroIMO']) || empty($data['cnpj']) || empty($data['email']) || empty($data['telefone'])){
             
             $response = $response->withJson([
                 'message' => 'necessario preencher todos os campos!'
@@ -62,6 +62,15 @@ final class ClientesController{
 
             $cliente->setNome($data['nome']);
             $cliente->setEmail($data['email']);
+            $cliente->setCep($data['cep']);
+            $cliente->setPreco($data['preco']);
+            $cliente->setPrecoVisual($data['precoVisual']);
+            $cliente->setRua($data['rua']);
+            $cliente->setNumeroIMO($data['numeroIMO']);
+            $cliente->setBairro($data['bairro']);
+            $cliente->setCidade($data['cidade']);
+            $cliente->setUf($data['uf']);
+            $cliente->setCnpj($data['cnpj']);
             $cliente->setTelefone($data['telefone']);
 
         }
