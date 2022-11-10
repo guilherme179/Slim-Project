@@ -66,13 +66,23 @@ class ClientesDAO extends Conexao {
         $statement = $this->pdo
             ->prepare('UPDATE clientes 
                 SET nome = :nome,
-                    email = :email,
-                    telefone = :telefone
+                    telefone = :telefone,
+                    preco = :preco,
+                    precoVisual = :precoVisual,
+                    cep = :cep,
+                    rua = :rua,
+                    numeroIMO = :numeroIMO,
+                    bairro = :bairro
                 where id = :id');
         $statement->execute([
             'id' => $cliente->getId(),
             'nome' => $cliente->getNome(),
-            'email' => $cliente->getEmail(),
+            'preco' => $cliente->getPreco(),
+            'precoVisual' => $cliente->getPrecoVisual(),
+            'cep' => $cliente->getCep(),
+            'rua' => $cliente->getRua(),
+            'numeroIMO' => $cliente->getNumeroIMO(),
+            'bairro' => $cliente->getBairro(),
             'telefone' => $cliente->getTelefone(),
         ]);
     }
